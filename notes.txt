@@ -1,8 +1,15 @@
-docker build -t praveshgupta1993/eureka-server:1.0 .
-
+docker build -f Dockerfile -t praveshgupta1993/eureka-server:1.0 .
 docker push praveshgupta1993/eureka-server:1.0
+docker run -d --name  eureka-server-container -p 8080:8761 --restart=always praveshgupta1993/eureka-server:1.0
+docker ps -a
+docker rmi <image-id>
+docker rm <container-id>
+docker stop <container-id>
+docker attach eureka-server-container
+docker container loggs eureka-server-container
+docker-machine ip
+docker-machine ssh
 
 kubectl apply -f eureka-server-deployment.yaml
-
 kubectl delete service eureka-server-service
 kubectl delete deployment eureka-server-deployment
