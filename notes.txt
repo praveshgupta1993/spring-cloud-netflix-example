@@ -6,10 +6,28 @@ docker rmi <image-id>
 docker rm <container-id>
 docker stop <container-id>
 docker attach eureka-server-container
-docker container loggs eureka-server-container
+docker container logs eureka-server-container
 docker-machine ip
 docker-machine ssh
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker pull praveshgupta1993/eureka-server:1.0
+
+minikube start
+minikube stop
+eval $(minikube docker-env)
+
+cd pravesh\microservices\project\examples\spring-cloud-netflix-example
 
 kubectl apply -f eureka-server-deployment.yaml
+kubectl get deployments --namespace eureka-server-namespace
+kubectl get services --namespace eureka-server-namespace
+kubectl get pods --namespace eureka-server-namespace
+kubectl get rs --namespace eureka-server-namespace
+kubectl get svc --namespace eureka-server-namespace
+kubectl scale deploy eureka-server-deployment --replicas=0 --namespace eureka-server-namespace
 kubectl delete service eureka-server-service
 kubectl delete deployment eureka-server-deployment
+kubectl run eureka-server-app-example --image=praveshgupta1993/eureka-server:1.0 --port=8761
+kubectl expose deployment eureka-server-app-example --type=LoadBalancer --port=8080 --target-port=8761
+kubectl get svc
