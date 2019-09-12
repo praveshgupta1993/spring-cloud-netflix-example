@@ -19,7 +19,7 @@ eval $(minikube docker-env)
 
 cd pravesh\microservices\project\examples\spring-cloud-netflix-example
 
-kubectl apply -f eureka-server-deployment.yaml
+kubectl apply -f microservices-dev-server-deployment.yaml
 kubectl get deployments --namespace eureka-server-namespace
 kubectl get services --namespace eureka-server-namespace
 kubectl get pods --namespace eureka-server-namespace

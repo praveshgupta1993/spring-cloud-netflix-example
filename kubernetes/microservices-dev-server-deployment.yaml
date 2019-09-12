@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: namespace-microservices-dev
+  labels:
+    name: namespace-label-microservices-dev
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-eureka-server
+  namespace: namespace-microservices-dev
+spec:
+  selector:
+    app: pod-label-eureka-server
+  ports:
+    - protocol: TCP
+      nodePort: 31234
+      port: 8080
+      targetPort: 8761
+      name: service-eureka-server
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-eureka-server
+  namespace: namespace-microservices-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pod-label-eureka-server
+  template:
+    metadata:
+      name: pod-eureka-server
+      labels:
+        app: pod-label-eureka-server
+    spec:
+      containers:
+        - name: container-eureka-server
+          image: praveshgupta1993/eureka-server:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8761
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-microservices-dev
+  namespace: namespace-microservices-dev
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+  - host: microservices.dev
+    http:
+      paths:
+      - path: /(.+)
+        backend:
+          serviceName: service-eureka-server
+          servicePort: 31234
