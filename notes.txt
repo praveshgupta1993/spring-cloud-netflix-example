@@ -20,12 +20,12 @@ eval $(minikube docker-env)
 cd pravesh\microservices\project\examples\spring-cloud-netflix-example
 
 kubectl apply -f microservices-dev-server-deployment.yaml
-kubectl get deployments --namespace eureka-server-namespace
-kubectl get services --namespace eureka-server-namespace
-kubectl get pods --namespace eureka-server-namespace
-kubectl get rs --namespace eureka-server-namespace
-kubectl get svc --namespace eureka-server-namespace
-kubectl scale deploy eureka-server-deployment --replicas=0 --namespace eureka-server-namespace
+kubectl get deployments --namespace namespace-microservices-dev
+kubectl get services --namespace namespace-microservices-dev
+kubectl get pods --namespace namespace-microservices-dev
+kubectl get rs --namespace namespace-microservices-dev
+kubectl get svc --namespace namespace-microservices-dev
+kubectl scale deploy eureka-server-deployment --replicas=0 --namespace namespace-microservices-dev
 kubectl delete service eureka-server-service
 kubectl delete deployment eureka-server-deployment
 kubectl run eureka-server-app-example --image=praveshgupta1993/eureka-server:1.0 --port=8761
